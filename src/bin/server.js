@@ -29,6 +29,7 @@ app.use(webpackDevMiddleware(compiler, {
 }));
 
 const {
+  formatErrorStack,
   createCompilationPromise,
   evalBundleCode
 } = createIsomorphicWebpack(webpackConfiguration, {
@@ -62,6 +63,15 @@ app.get('/', (req, res) => {
   const userFacingApp = renderToString(evalBundleCode(requestUrl).default);
 
   res.send(renderFullPage(userFacingApp));
+});
+
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  const formattedErr = formatErrorStack(err.stack);
+
+  // eslint-disable-next-line no-console
+  console.error(formattedErr);
+  res.status(500).type('text/plain').send(formattedErr);
 });
 
 app.listen(8000);
