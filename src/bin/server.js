@@ -59,9 +59,9 @@ const renderFullPage = (body) => {
 app.get('/', (req, res) => {
   const requestUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
-  const app = renderToString(evalBundleCode(requestUrl).default);
+  const userFacingApp = renderToString(evalBundleCode(requestUrl).default);
 
-  res.send(renderFullPage(app));
+  res.send(renderFullPage(userFacingApp));
 });
 
 app.listen(8000);
